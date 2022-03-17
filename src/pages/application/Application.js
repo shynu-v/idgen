@@ -22,10 +22,7 @@ function Application(props) {
         const { name, value } = event.target;
         setapplicationValues({ ...applicationValues, [name]: value });
     }
-    const dateChange = (event) => {
-        const date = event.target.value;
-        const myDate = new Date(date);
-    }
+ 
 
     const handleChangeImage = (event) => {
         setFileName(event.target.files[0]);
@@ -89,7 +86,7 @@ useEffect(()=>{
 useEffect(()=>{
 			axios.get(`/api/admin/${applicationValues.batch}/getbatch`).then((res) => {
 				setstart(res.data.startDate);
-                setend(res.data.endDate.format("YYYY/MM/DD"));
+                setend(res.data.endDate);
 			});
 },[applicationValues.batch])
 

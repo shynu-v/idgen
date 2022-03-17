@@ -8,14 +8,12 @@ routes.get("/generate-pdf/", async (req, res) => {
 	try {
 		console.log(req.user._id);
 		const app = await applicationModel.findOne({
-			_id: req.user._id,
+			student: req.user._id,
 			isApproved: "approved",
 		});
 		const { student, phone, photo, ...appstat } = app._doc;
 		const batch = await batchModel.findOne({ _id: appstat.batch });
 		const { batchName } = batch._doc;
-		const course = await courseModel.findOne({ _id: appstat.course });
-		const { name } = course._doc;
 		const doc = new pdfmake({
 			Roboto: {
 				normal: new Buffer(
@@ -32,7 +30,7 @@ routes.get("/generate-pdf/", async (req, res) => {
 					height: 150,
 					alignment: "center",
 				},
-				{ text: name, style: "header", alignment: "center" },
+				{ text: appstat.name, style: "header", alignment: "center" },
 				{ text: batchName, style: "header", alignment: "center" },
 			],
 		});
